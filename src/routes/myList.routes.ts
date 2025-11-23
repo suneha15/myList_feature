@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { MyListController } from '../controllers/MyListController';
 import { ServiceFactory } from '../services';
 import { validate, addToMyListRequestSchema, listMyItemsQuerySchema } from '../dtos/validators';
@@ -58,7 +58,7 @@ async function getController(): Promise<MyListController> {
  */
 router.post(
   '/items',
-  async (req, _res, next) => {
+  async (req: Request, _res: Response, next: NextFunction) => {
     try {
       // Validate request body
       const validatedBody = validate(addToMyListRequestSchema, req.body);
@@ -68,7 +68,7 @@ router.post(
       next(error);
     }
   },
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const controller = await getController();
       await controller.addToMyList(req, res, next);
@@ -93,7 +93,7 @@ router.post(
  */
 router.delete(
   '/items/:contentId',
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const controller = await getController();
       await controller.removeFromMyList(req, res, next);
@@ -143,7 +143,7 @@ router.delete(
  */
 router.get(
   '/items',
-  async (req, _res, next) => {
+  async (req: Request, _res: Response, next: NextFunction) => {
     try {
       // Validate query parameters
       const validatedQuery = validate(listMyItemsQuerySchema, req.query);
@@ -153,7 +153,7 @@ router.get(
       next(error);
     }
   },
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const controller = await getController();
       await controller.getMyList(req, res, next);
